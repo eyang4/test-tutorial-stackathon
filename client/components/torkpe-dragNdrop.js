@@ -23,10 +23,10 @@ class TorkPeDragNDrop extends Component {
     }
   }
 
-  onDrag = (event, todo) => {
+  onDrag = (event, todoOrTask) => {
     event.preventDefault()
     this.setState({
-      draggedTask: todo
+      draggedTask: todoOrTask
     })
   }
 
@@ -34,19 +34,33 @@ class TorkPeDragNDrop extends Component {
     event.preventDefault()
   }
 
-  onDrop = event => {
+  onDrop = (event, location) => {
     const {completedTasks, draggedTask, todos} = this.state
-    this.setState({
-      completedTasks: [...completedTasks, draggedTask],
-      todos: todos.filter(task => task.taskID !== draggedTask.taskID),
-      draggedTask: {}
-    })
+    if (location === 'tasks') {
+      this.setState({
+        completedTasks: [...completedTasks, draggedTask],
+        todos: todos.filter(task => task.taskID !== draggedTask.taskID),
+        draggedTask: {}
+      })
+    } else if (location === 'todos') {
+      this.setState({
+        todos: [...todos, draggedTask],
+        completedTasks: completedTasks.filter(
+          task => task.taskID !== draggedTask.taskID
+        ),
+        draggedTask: {}
+      })
+    }
   }
   render() {
     const {todos, completedTasks} = this.state
     return (
       <div className="App">
-        <div className="todos">
+        <div
+          onDrop={event => this.onDrop(event, 'todos')}
+          onDragOver={event => this.onDragOver(event)}
+          className="todos"
+        >
           Todo
           {todos.map(todo => (
             <div
@@ -59,13 +73,19 @@ class TorkPeDragNDrop extends Component {
           ))}
         </div>
         <div
-          onDrop={event => this.onDrop(event)}
+          onDrop={event => this.onDrop(event, 'tasks')}
           onDragOver={event => this.onDragOver(event)}
           className="done"
         >
           Completed
           {completedTasks.map((task, index) => (
-            <div key={task.taskID}>{task.task}</div>
+            <div
+              key={task.taskID}
+              draggable
+              onDrag={event => this.onDrag(event, task)}
+            >
+              {task.task}
+            </div>
           ))}
         </div>
       </div>
