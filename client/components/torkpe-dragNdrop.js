@@ -1,4 +1,23 @@
 import React, {Component} from 'react'
+const text3 = `describe('doubler function', () => {
+  const arbitraryNum = 5
+  const arbitraryStr = 'boop'
+  let arbitraryVar`
+
+const text4 = `  it('returns double of the input', () => {
+  expect(doubler(2)).equal(4)
+  expect(doubler(2)).to.equal(4)
+  expect(doubler(2)).be.equal(4)
+  expect(doubler(2)).to.be.equal(4)
+  expect(doubler(arbitraryNum)).to.be.equal(10)
+})`
+
+const text5 = `  it('returns 0 for any input besides a number', () => {
+  expect(doubler(undefined)).to.equal(0)
+  expect(doubler()).to.equal(0)
+  expect(doubler(arbitraryVar)).to.equal(0)
+  expect(doubler(arbitraryStr)).to.equal(0)
+})`
 
 class TorkPeDragNDrop extends Component {
   constructor(props) {
@@ -7,23 +26,27 @@ class TorkPeDragNDrop extends Component {
       todos: [
         {
           taskID: 1,
-          task: 'Walk the walk'
+          task: 'import {expect} from "chai"'
         },
         {
           taskID: 2,
-          task: 'Talk the talk'
+          task: 'import {doubler} from "./exampleForTesting"'
         },
         {
           taskID: 3,
-          task: 'Jump the jump'
+          task: text3
         },
         {
           taskID: 4,
-          task: 'Hop the hop'
+          task: text4
         },
         {
           taskID: 5,
-          task: 'Skip the skip'
+          task: text5
+        },
+        {
+          taskID: 6,
+          task: '})'
         }
       ],
       completedTasks: [],
@@ -137,6 +160,13 @@ class TorkPeDragNDrop extends Component {
     const {todos, completedTasks} = this.state
     return (
       <div className="App">
+        <div className="codeText">
+          {`export const doubler = num => {\n
+  if (typeof num === 'number') return 2 * num\n
+  else return 0\n
+}
+`}
+        </div>
         <div
           onDrop={event => this.onDrop(event, 'todos')}
           onDragOver={event => this.onDragOver(event)}
