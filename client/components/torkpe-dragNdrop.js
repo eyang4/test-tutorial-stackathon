@@ -69,7 +69,7 @@ class TorkPeDragNDrop extends Component {
             draggedTask: {}
           })
         }
-        event.stopPropagation() // prevent parent from calling onDrop
+        event.stopPropagation() // remember these!? - prevent parent from calling onDrop
       } else if (parentDiv === 'todos') {
         if (
           !Object.values(todos)
@@ -125,6 +125,14 @@ class TorkPeDragNDrop extends Component {
     }
     console.log('state', this.state)
   }
+
+  isCorrect = (correct, arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      if (correct[i] !== arr[i]) return false
+    }
+    return true
+  }
+
   render() {
     const {todos, completedTasks} = this.state
     return (
@@ -164,6 +172,13 @@ class TorkPeDragNDrop extends Component {
               {task.task}
             </div>
           ))}
+        </div>
+        <div className="evaluation">
+          {`Current order: ${Object.values(todos).map(elem => elem.taskID)}
+            Matches original: ${this.isCorrect(
+              [1, 2, 3, 4, 5],
+              Object.values(todos).map(elem => elem.taskID)
+            )}`}
         </div>
       </div>
     )
