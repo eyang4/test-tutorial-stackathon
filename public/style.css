@@ -52,3 +52,7 @@ form div {
 .done {
   background-color: blue;
 }
+
+.taskDiv {
+  border: dashed;
+}
