@@ -58,6 +58,16 @@ form div {
   border: dashed;
 }
 
+.evalDiv {
+  border: thick double;
+  border-color: red;
+}
+
+.evalLineDiv {
+  border: dashed;
+  border-color: blue;
+}
+
 .App {
   white-space: pre-wrap;
 }

@@ -245,8 +245,9 @@ Matches original: ${this.isCorrect(
             [1, 2, 3, 4, 5],
             Object.values(todos).map(elem => elem.taskID)
           )}
-Evaluation: ${Object.values(completedTasks).map(elem => elem.type)}
-${Object.values(completedTasks).map((elem, index) => {
+Evaluation: Line 1 ${Object.values(completedTasks).map(elem => elem.type)}
+Line 2`}
+          {Object.values(completedTasks).map((elem, index) => {
             if (elem.type === 'import') {
               const subText = []
               if (
@@ -268,7 +269,15 @@ ${Object.values(completedTasks).map((elem, index) => {
               ) {
                 subText.push(`posNotAtTop`)
               }
-              return subText
+              return (
+                <div className="evalDiv">
+                  {subText.map(subElem => (
+                    <div key={subElem} className="evalLineDiv">
+                      {subElem}
+                    </div>
+                  ))}
+                </div>
+              )
             }
 
             if (elem.type === 'setup') {
@@ -309,7 +318,15 @@ ${Object.values(completedTasks).map((elem, index) => {
                       : 'setup is missing setupWrap'
                   }`
                 )
-              return subText
+              return (
+                <div className="evalDiv">
+                  {subText.map(subElem => (
+                    <div key={subElem} className="evalLineDiv">
+                      {subElem}
+                    </div>
+                  ))}
+                </div>
+              )
             }
 
             if (elem.type === 'assert') {
@@ -326,7 +343,39 @@ ${Object.values(completedTasks).map((elem, index) => {
                       : 'assert is missing import'
                   }`
                 )
-              return subText
+              if (
+                !Object.values(completedTasks.slice(0, index)).some(
+                  innerElem => innerElem.type === 'import'
+                )
+              )
+                subText.push(
+                  `beforeImport: ${
+                    elem.require.import
+                      ? elem.require.import
+                      : 'assert is before import'
+                  }`
+                )
+              if (
+                !Object.values(completedTasks.slice(0, index)).some(
+                  innerElem => innerElem.type === 'setup'
+                )
+              )
+                subText.push(
+                  `beforeSetup: ${
+                    elem.require.import
+                      ? elem.require.import
+                      : 'assert is before setup'
+                  }`
+                )
+              return (
+                <div className="evalDiv">
+                  {subText.map(subElem => (
+                    <div key={subElem} className="evalLineDiv">
+                      {subElem}
+                    </div>
+                  ))}
+                </div>
+              )
             }
 
             if (elem.type === 'setupWrap') {
@@ -353,7 +402,15 @@ ${Object.values(completedTasks).map((elem, index) => {
               ) {
                 subText.push(`posNotClosing`)
               }
-              return subText
+              return (
+                <div className="evalDiv">
+                  {subText.map(subElem => (
+                    <div key={subElem} className="evalLineDiv">
+                      {subElem}
+                    </div>
+                  ))}
+                </div>
+              )
             }
 
             function isClosing(arr, startPoint) {
@@ -367,7 +424,7 @@ ${Object.values(completedTasks).map((elem, index) => {
               }
               return false
             }
-          })}`}
+          })}
         </div>
       </div>
     )
