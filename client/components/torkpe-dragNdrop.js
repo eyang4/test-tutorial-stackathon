@@ -318,6 +318,30 @@ Line 2`}
                       : 'setup is missing setupWrap'
                   }`
                 )
+              if (
+                Object.values(completedTasks.slice(index + 1)).some(
+                  innerElem => innerElem.type === 'import'
+                )
+              )
+                subText.push(
+                  `beforeImport: ${
+                    elem.require.import
+                      ? elem.require.import
+                      : 'setup is before import'
+                  }`
+                )
+              if (
+                Object.values(completedTasks.slice(0, index)).some(
+                  innerElem => innerElem.type === 'assert'
+                )
+              )
+                subText.push(
+                  `afterAssert: ${
+                    elem.require.import
+                      ? elem.require.import
+                      : 'setup is after assert'
+                  }`
+                )
               return (
                 <div className="evalDiv">
                   {subText.map(subElem => (
@@ -344,7 +368,7 @@ Line 2`}
                   }`
                 )
               if (
-                !Object.values(completedTasks.slice(0, index)).some(
+                Object.values(completedTasks.slice(index + 1)).some(
                   innerElem => innerElem.type === 'import'
                 )
               )
@@ -356,7 +380,7 @@ Line 2`}
                   }`
                 )
               if (
-                !Object.values(completedTasks.slice(0, index)).some(
+                Object.values(completedTasks.slice(index + 1)).some(
                   innerElem => innerElem.type === 'setup'
                 )
               )
