@@ -26,27 +26,39 @@ class TorkPeDragNDrop extends Component {
       todos: [
         {
           taskID: 1,
-          task: 'import {expect} from "chai"'
+          task: 'import {expect} from "chai"',
+          type: 'import',
+          require: ['assert']
         },
         {
           taskID: 2,
-          task: 'import {doubler} from "./exampleForTesting"'
+          task: 'import {doubler} from "./exampleForTesting"',
+          type: 'import',
+          require: ['assert']
         },
         {
           taskID: 3,
-          task: text3
+          task: text3,
+          type: 'setup',
+          require: ['import', 'assert']
         },
         {
           taskID: 4,
-          task: text4
+          task: text4,
+          type: 'assert',
+          require: ['import']
         },
         {
           taskID: 5,
-          task: text5
+          task: text5,
+          type: 'assert',
+          require: ['import']
         },
         {
           taskID: 6,
-          task: '})'
+          task: '})',
+          type: 'setupWrap',
+          require: ['setup']
         }
       ],
       completedTasks: [],
