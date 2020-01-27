@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */ // temporary fix for polluted arrow functions
 /* eslint-disable complexity */ // temporary fix for complex if statement combos
 import React, {Component} from 'react'
 const text3 = `describe('doubler function', () => {
@@ -47,7 +48,9 @@ class TorkPeDragNDrop extends Component {
           type: 'setup',
           require: {
             import: '',
-            specificImport: {},
+            specificImport: {
+              1: '' // for testing
+            },
             assert: ''
           }
         },
@@ -59,7 +62,7 @@ class TorkPeDragNDrop extends Component {
             import: '',
             specificImport: {
               1: '',
-              2: ''
+              2: '' // for testing
             }
           }
         },
@@ -355,6 +358,14 @@ Line 2`}
 
             if (elem.type === 'assert') {
               const subText = []
+              const specificImportKeyArr = Object.keys(
+                elem.require.specificImport
+              ).map(innerElem => Number(innerElem))
+              const completedTasksValArr = Object.values(completedTasks)
+              const mapped = completedTasksValArr.map(
+                innerElem => innerElem.taskID
+              )
+              // has at least one specific import that has not been moved into solution area
               if (
                 !Object.values(completedTasks).some(
                   innerElem => innerElem.type === 'import'
@@ -367,6 +378,14 @@ Line 2`}
                       : 'assert is missing import'
                   }`
                 )
+              else if (
+                specificImportKeyArr.length > 0 &&
+                specificImportKeyArr.some(
+                  innerElem => !mapped.includes(innerElem)
+                )
+              ) {
+                subText.push(`missingSpecificImport`)
+              }
               if (
                 Object.values(completedTasks.slice(index + 1)).some(
                   innerElem => innerElem.type === 'import'
