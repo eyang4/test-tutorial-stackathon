@@ -28,37 +28,50 @@ class TorkPeDragNDrop extends Component {
           taskID: 1,
           task: 'import {expect} from "chai"',
           type: 'import',
-          require: ['assert']
+          require: {
+            assert: '' // if empty, will return default value
+          }
         },
         {
           taskID: 2,
           task: 'import {doubler} from "./exampleForTesting"',
           type: 'import',
-          require: ['assert']
+          require: {
+            assert: ''
+          }
         },
         {
           taskID: 3,
           task: text3,
           type: 'setup',
-          require: ['import', 'assert']
+          require: {
+            import: '',
+            assert: ''
+          }
         },
         {
           taskID: 4,
           task: text4,
           type: 'assert',
-          require: ['import']
+          require: {
+            import: ''
+          }
         },
         {
           taskID: 5,
           task: text5,
           type: 'assert',
-          require: ['import']
+          require: {
+            import: ''
+          }
         },
         {
           taskID: 6,
           task: '})',
           type: 'setupWrap',
-          require: ['setup']
+          require: {
+            setup: ''
+          }
         }
       ],
       completedTasks: [],
@@ -216,11 +229,103 @@ class TorkPeDragNDrop extends Component {
           ))}
         </div>
         <div className="evaluation">
-          {`Current order: ${Object.values(todos).map(elem => elem.taskID)}
-            Matches original: ${this.isCorrect(
-              [1, 2, 3, 4, 5],
-              Object.values(todos).map(elem => elem.taskID)
-            )}`}
+          {`Current left order: ${Object.values(todos).map(elem => elem.taskID)}
+Current right order: ${Object.values(completedTasks).map(elem => elem.taskID)}
+Matches original: ${this.isCorrect(
+            [1, 2, 3, 4, 5],
+            Object.values(todos).map(elem => elem.taskID)
+          )}
+Evaluation: ${Object.values(completedTasks).map(elem => elem.type)}
+${Object.values(completedTasks).map(elem => {
+            if (elem.type === 'import') {
+              const subText = []
+              if (
+                !Object.values(completedTasks).some(
+                  innerElem => innerElem.type === 'assert'
+                )
+              )
+                subText.push(
+                  `missingAssert ${
+                    elem.require.assert
+                      ? elem.require.assert
+                      : 'import is missing assert'
+                  }`
+                ) // if empty, will return default value
+              return subText
+            }
+            if (elem.type === 'setup') {
+              const subText = []
+              if (
+                !Object.values(completedTasks).some(
+                  innerElem => innerElem.type === 'import'
+                )
+              )
+                subText.push(
+                  `missingImport ${
+                    elem.require.import
+                      ? elem.require.import
+                      : 'setup is missing import'
+                  }`
+                )
+              if (
+                !Object.values(completedTasks).some(
+                  innerElem => innerElem.type === 'assert'
+                )
+              )
+                subText.push(
+                  `missingAssert ${
+                    elem.require.assert
+                      ? elem.require.assert
+                      : 'setup is missing assert'
+                  }`
+                )
+              if (
+                !Object.values(completedTasks).some(
+                  innerElem => innerElem.type === 'setupWrap'
+                )
+              )
+                subText.push(
+                  `missingSetupWrap ${
+                    elem.require.setupWrap
+                      ? elem.require.setupWrap
+                      : 'setup is missing setupWrap'
+                  }`
+                )
+              return subText
+            }
+            if (elem.type === 'assert') {
+              const subText = []
+              if (
+                !Object.values(completedTasks).some(
+                  innerElem => innerElem.type === 'import'
+                )
+              )
+                subText.push(
+                  `missingImport ${
+                    elem.require.import
+                      ? elem.require.import
+                      : 'assert is missing import'
+                  }`
+                )
+              return subText
+            }
+            if (elem.type === 'setupWrap') {
+              const subText = []
+              if (
+                !Object.values(completedTasks).some(
+                  innerElem => innerElem.type === 'setup'
+                )
+              )
+                subText.push(
+                  `missingSetup ${
+                    elem.require.setup
+                      ? elem.require.setup
+                      : 'setupWrap is missing setup'
+                  }`
+                )
+              return subText
+            }
+          })}`}
         </div>
       </div>
     )
