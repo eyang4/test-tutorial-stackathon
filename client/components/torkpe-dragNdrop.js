@@ -1,3 +1,4 @@
+/* eslint-disable complexity */ // temporary fix for complex if statement combos
 import React, {Component} from 'react'
 const text3 = `describe('doubler function', () => {
   const arbitraryNum = 5
@@ -46,6 +47,7 @@ class TorkPeDragNDrop extends Component {
           type: 'setup',
           require: {
             import: '',
+            specificImport: {},
             assert: ''
           }
         },
@@ -54,7 +56,11 @@ class TorkPeDragNDrop extends Component {
           task: text4,
           type: 'assert',
           require: {
-            import: ''
+            import: '',
+            specificImport: {
+              1: '',
+              2: ''
+            }
           }
         },
         {
@@ -62,7 +68,11 @@ class TorkPeDragNDrop extends Component {
           task: text5,
           type: 'assert',
           require: {
-            import: ''
+            import: '',
+            specificImport: {
+              1: '',
+              2: ''
+            }
           }
         },
         {
@@ -236,7 +246,7 @@ Matches original: ${this.isCorrect(
             Object.values(todos).map(elem => elem.taskID)
           )}
 Evaluation: ${Object.values(completedTasks).map(elem => elem.type)}
-${Object.values(completedTasks).map(elem => {
+${Object.values(completedTasks).map((elem, index) => {
             if (elem.type === 'import') {
               const subText = []
               if (
@@ -245,14 +255,22 @@ ${Object.values(completedTasks).map(elem => {
                 )
               )
                 subText.push(
-                  `missingAssert ${
+                  `missingAssert: ${
                     elem.require.assert
                       ? elem.require.assert
                       : 'import is missing assert'
                   }`
                 ) // if empty, will return default value
+              if (
+                !Object.values(completedTasks.slice(0, index)).every(
+                  innerElem => innerElem.type === 'import'
+                )
+              ) {
+                subText.push(`posNotAtTop`)
+              }
               return subText
             }
+
             if (elem.type === 'setup') {
               const subText = []
               if (
@@ -261,7 +279,7 @@ ${Object.values(completedTasks).map(elem => {
                 )
               )
                 subText.push(
-                  `missingImport ${
+                  `missingImport: ${
                     elem.require.import
                       ? elem.require.import
                       : 'setup is missing import'
@@ -273,7 +291,7 @@ ${Object.values(completedTasks).map(elem => {
                 )
               )
                 subText.push(
-                  `missingAssert ${
+                  `missingAssert: ${
                     elem.require.assert
                       ? elem.require.assert
                       : 'setup is missing assert'
@@ -285,7 +303,7 @@ ${Object.values(completedTasks).map(elem => {
                 )
               )
                 subText.push(
-                  `missingSetupWrap ${
+                  `missingSetupWrap: ${
                     elem.require.setupWrap
                       ? elem.require.setupWrap
                       : 'setup is missing setupWrap'
@@ -293,6 +311,7 @@ ${Object.values(completedTasks).map(elem => {
                 )
               return subText
             }
+
             if (elem.type === 'assert') {
               const subText = []
               if (
@@ -301,7 +320,7 @@ ${Object.values(completedTasks).map(elem => {
                 )
               )
                 subText.push(
-                  `missingImport ${
+                  `missingImport: ${
                     elem.require.import
                       ? elem.require.import
                       : 'assert is missing import'
@@ -309,6 +328,7 @@ ${Object.values(completedTasks).map(elem => {
                 )
               return subText
             }
+
             if (elem.type === 'setupWrap') {
               const subText = []
               if (
@@ -317,13 +337,35 @@ ${Object.values(completedTasks).map(elem => {
                 )
               )
                 subText.push(
-                  `missingSetup ${
+                  `missingSetup: ${
                     elem.require.setup
                       ? elem.require.setup
                       : 'setupWrap is missing setup'
                   }`
                 )
+              if (
+                !isClosing(
+                  Object.values(completedTasks).map(
+                    innerElem => innerElem.type
+                  ),
+                  index - 1
+                )
+              ) {
+                subText.push(`posNotClosing`)
+              }
               return subText
+            }
+
+            function isClosing(arr, startPoint) {
+              const stack = []
+              for (let i = startPoint; i >= 0; i--) {
+                if (arr[i] === 'setup') {
+                  if (stack.length === 0) return true
+                  else stack.pop()
+                }
+                if (arr[i] === 'setupWrap') stack.push(i)
+              }
+              return false
             }
           })}`}
         </div>
