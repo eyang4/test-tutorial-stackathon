@@ -27,19 +27,11 @@ class TorkPeDragNDrop extends Component {
     this.state = {
       todos: [
         {
-          taskID: 1,
-          task: 'import {expect} from "chai"',
-          type: 'import',
+          taskID: 6,
+          task: '})',
+          type: 'setupWrap',
           require: {
-            assert: '' // if empty, will return default value
-          }
-        },
-        {
-          taskID: 2,
-          task: 'import {doubler} from "./exampleForTesting"',
-          type: 'import',
-          require: {
-            assert: ''
+            setup: ''
           }
         },
         {
@@ -55,18 +47,6 @@ class TorkPeDragNDrop extends Component {
           }
         },
         {
-          taskID: 4,
-          task: text4,
-          type: 'assert',
-          require: {
-            import: '',
-            specificImport: {
-              1: '',
-              2: '' // for testing
-            }
-          }
-        },
-        {
           taskID: 5,
           task: text5,
           type: 'assert',
@@ -79,11 +59,31 @@ class TorkPeDragNDrop extends Component {
           }
         },
         {
-          taskID: 6,
-          task: '})',
-          type: 'setupWrap',
+          taskID: 4,
+          task: text4,
+          type: 'assert',
           require: {
-            setup: ''
+            import: '',
+            specificImport: {
+              1: '',
+              2: '' // for testing
+            }
+          }
+        },
+        {
+          taskID: 2,
+          task: 'import {doubler} from "./exampleForTesting"',
+          type: 'import',
+          require: {
+            assert: ''
+          }
+        },
+        {
+          taskID: 1,
+          task: 'import {expect} from "chai"',
+          type: 'import',
+          require: {
+            assert: '' // if empty, will return default value
           }
         }
       ],

@@ -72,12 +72,12 @@ form div {
 
 .evalDiv {
   border: thick double;
-  border-color: red;
+  border-color: #6a8caf;
 }
 
 .evalLineDiv {
   border: dashed;
-  border-color: blue;
+  border-color: #a7e9af;
 }
 
 .App {
