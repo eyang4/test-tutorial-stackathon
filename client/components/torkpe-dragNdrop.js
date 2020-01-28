@@ -31,7 +31,7 @@ class TorkPeDragNDrop extends Component {
           task: '})',
           type: 'setupWrap',
           require: {
-            setup: ''
+            setup: 'Closing brackets are missing open brackets to close'
           }
         },
         {
@@ -39,11 +39,11 @@ class TorkPeDragNDrop extends Component {
           task: text3,
           type: 'setup',
           require: {
-            import: '',
+            import: 'Describe block is missing required import statement',
             specificImport: {
-              1: '' // for testing
+              // 1: '' // for testing
             },
-            assert: ''
+            assert: 'Describe block is missing required assertion'
           }
         },
         {
@@ -51,10 +51,10 @@ class TorkPeDragNDrop extends Component {
           task: text5,
           type: 'assert',
           require: {
-            import: '',
+            import: 'Assertion is missing required import statement',
             specificImport: {
-              1: '',
-              2: ''
+              1: '"expect" is not defined',
+              2: '"doubler" is not defined'
             }
           }
         },
@@ -63,10 +63,10 @@ class TorkPeDragNDrop extends Component {
           task: text4,
           type: 'assert',
           require: {
-            import: '',
+            import: 'Assertion is missing required import statement',
             specificImport: {
-              1: '',
-              2: '' // for testing
+              1: '"expect" is not defined'
+              // 2: '' // for testing
             }
           }
         },
@@ -75,7 +75,7 @@ class TorkPeDragNDrop extends Component {
           task: 'import {doubler} from "./exampleForTesting"',
           type: 'import',
           require: {
-            assert: ''
+            assert: 'Import statement is missing an assertion to run'
           }
         },
         {
@@ -83,7 +83,7 @@ class TorkPeDragNDrop extends Component {
           task: 'import {expect} from "chai"',
           type: 'import',
           require: {
-            assert: '' // if empty, will return default value
+            assert: 'Import statement is missing an assertion to run' // if empty, will return default value
           }
         }
       ],
@@ -270,7 +270,10 @@ Line 2`} */}
                   innerElem => innerElem.type === 'import'
                 )
               ) {
-                subText.push(`posNotAtTop`)
+                subText.push(
+                  // `posNotAtTop`
+                  `Import statement is after non-import blocks`
+                )
               }
               // function throttle(func, time) {
               //   let throttling = false
@@ -395,7 +398,10 @@ Line 2`} */}
                   innerElem => !mapped.includes(innerElem)
                 )
               ) {
-                subText.push(`missingSpecificImport`)
+                subText.push(
+                  // `missingSpecificImport`
+                  `Block is missing a specific import statement`
+                )
               }
               if (
                 Object.values(completedTasks.slice(index + 1)).some(
@@ -454,7 +460,10 @@ Line 2`} */}
                   index - 1
                 )
               ) {
-                subText.push(`posNotClosing`)
+                subText.push(
+                  // `posNotClosing`
+                  `Closing brackets do not correspond to any open brackets`
+                )
               }
               return (
                 <div className="evalDiv">
