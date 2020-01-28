@@ -89,6 +89,7 @@ class TorkPeDragNDrop extends Component {
       ],
       completedTasks: [],
       draggedTask: {}
+      // error: 0
     }
   }
 
@@ -199,18 +200,16 @@ class TorkPeDragNDrop extends Component {
     return (
       <div className="App">
         <div className="codeText">
-          {`export const doubler = num => {\n
-  if (typeof num === 'number') return 2 * num\n
-  else return 0\n
-}
-`}
+          <h2>exampleForTesting.js</h2>
+          {`export const doubler = num => {\n  if (typeof num === 'number')\n    return 2 * num\n  else return 0\n}`}
         </div>
         <div
           onDrop={event => this.onDrop(event, 'todos')}
           onDragOver={event => this.onDragOver(event)}
-          className="todos"
+          className={`todos
+          `}
         >
-          Todo
+          <h2>Code Bank</h2>
           {todos.map((todo, index) => (
             <div
               key={todo.taskID}
@@ -228,7 +227,7 @@ class TorkPeDragNDrop extends Component {
           onDragOver={event => this.onDragOver(event)}
           className="done"
         >
-          Completed
+          <h2>Sandbox</h2>
           {completedTasks.map((task, index) => (
             <div
               key={task.taskID}
@@ -242,14 +241,15 @@ class TorkPeDragNDrop extends Component {
           ))}
         </div>
         <div className="evaluation">
-          {`Current left order: ${Object.values(todos).map(elem => elem.taskID)}
+          {/*`Current left order: ${Object.values(todos).map(elem => elem.taskID)}
 Current right order: ${Object.values(completedTasks).map(elem => elem.taskID)}
 Matches original: ${this.isCorrect(
             [1, 2, 3, 4, 5],
             Object.values(todos).map(elem => elem.taskID)
-          )}
-Evaluation: Line 1 ${Object.values(completedTasks).map(elem => elem.type)}
-Line 2`}
+)*/}
+          <h2>Evaluation</h2>
+          {/* Line 1 ${Object.values(completedTasks).map(elem => elem.type)}
+Line 2`} */}
           {Object.values(completedTasks).map((elem, index) => {
             if (elem.type === 'import') {
               const subText = []
@@ -272,6 +272,17 @@ Line 2`}
               ) {
                 subText.push(`posNotAtTop`)
               }
+              // function throttle(func, time) {
+              //   let throttling = false
+              //   return () => {
+              //     if (!throttling) {
+              //       throttling = true
+              //       func
+              //       setTimeout((throttling = false), time)
+              //     }
+              //   }
+              // }
+              // throttle(this.setState({error: subText.length}), 1000)()
               return (
                 <div className="evalDiv">
                   {subText.map(subElem => (

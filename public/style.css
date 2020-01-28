@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  background-color: #6a8caf;
 }
 
 a {
@@ -23,7 +24,7 @@ form div {
 .App {
   /* text-align: center; */
   display: flex;
-  font: 1em courier;
+  font: 0.75em courier;
 }
 
 .App-logo {
@@ -47,15 +48,26 @@ form div {
 }
 
 .todos {
-  background-color: red;
+  background-color: #eef9bf;
+  border-radius: 10% 25% 10% 10%;
+  padding: 1.5%;
+  width: 30%;
+}
+
+.success {
+  background-color: green;
 }
 
 .done {
-  background-color: blue;
+  background-color: #a7e9af;
+  border-radius: 10% 25% 10% 10%;
+  padding: 1.5%;
+  width: 30%;
 }
 
 .taskDiv {
   border: dashed;
+  margin: 1%;
 }
 
 .evalDiv {
@@ -70,4 +82,18 @@ form div {
 
 .App {
   white-space: pre-wrap;
+}
+
+.codeText {
+  background-color: #75b79e;
+  border-radius: 10% 25% 10% 10%;
+  padding: 1.5%;
+  width: 20%;
+}
+
+.evaluation {
+  background-color: #75b79e;
+  border-radius: 10% 25% 10% 10%;
+  padding: 1.5%;
+  width: 20%;
 }
