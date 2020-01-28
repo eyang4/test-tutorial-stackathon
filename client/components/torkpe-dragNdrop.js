@@ -247,7 +247,7 @@ Matches original: ${this.isCorrect(
             [1, 2, 3, 4, 5],
             Object.values(todos).map(elem => elem.taskID)
 )*/}
-          <h2>Evaluation</h2>
+          <h2>Guidance</h2>
           {/* Line 1 ${Object.values(completedTasks).map(elem => elem.type)}
 Line 2`} */}
           {Object.values(completedTasks).map((elem, index) => {
